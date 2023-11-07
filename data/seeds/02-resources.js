@@ -1,4 +1,4 @@
-exports.seed = function(knex, Promise) {
+exports.seed = function(knex) {
     return knex('resources').insert([
       {
         resource_name: 'Complete Node.js and Express Challenge',
