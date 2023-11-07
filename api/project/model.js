@@ -20,10 +20,11 @@ function get(id) {
     const promises = [query, getProjectTasks(id), getProjectResources(id)]; // [ projects, actions ]
 
     return Promise.all(promises).then(function(results) {
-      let [project, tasks] = results;
+      let [project, tasks, resources] = results;
 
       if (project) {
         project.tasks = tasks;
+        project.resources = resources;
 
         return mappers.projectToBody(project);
       } else {
