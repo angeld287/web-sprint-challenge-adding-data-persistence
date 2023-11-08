@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
     const { project_name, project_description, project_completed } = req.body;
     const _completed = project_completed ? project_completed : false;
 
-    if(project_name && project_description ){
+    if(project_name ){
         const project = await insert({ project_name, project_description, project_completed: _completed }) 
         res.status(200).json(project);
     }else{

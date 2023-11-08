@@ -1,6 +1,7 @@
 // build your `/api/tasks` router here
 const express = require('express');
 const { get, insert, update, remove } = require('./model');
+const projects = require('../project/model.js');
 
 const router = express.Router();
 
@@ -21,9 +22,15 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     const { project_id, task_description, task_completed, task_notes } = req.body;
     const _completed = task_completed ? task_completed : false;
-    if(project_id && task_description && task_notes){
-        const task = await insert({ project_id, task_description, completed: _completed, task_notes }) 
-        res.status(200).json(task);
+    if(project_id && task_description){
+        const project = await projects.get(project_id);
+        if(project){
+            const task = await insert({ project_id, task_description, task_completed: _completed, task_notes }) 
+            res.status(200).json(task);
+        }else{
+            res.status(400).json({message: 'project_id not found'});
+        }
+        
     }else{
         res.status(400).json(null);
     }

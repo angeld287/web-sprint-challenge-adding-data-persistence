@@ -23,8 +23,10 @@ function get(id) {
       }
     });
   } else {
-    return query.then(tasks => {
-      return tasks
+    return query
+          .leftOuterJoin('projects', 't.project_id', 'projects.project_id')
+          .then(tasks => {
+      return tasks.map(task => mappers.taskToBody(task))
     });
   }
 }

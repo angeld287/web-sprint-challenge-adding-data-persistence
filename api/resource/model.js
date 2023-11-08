@@ -6,6 +6,7 @@ module.exports = {
   insert,
   update,
   remove,
+  getByName,
 };
 
 function get(id) {
@@ -26,6 +27,14 @@ function get(id) {
       return projects;
     });
   }
+}
+
+function getByName(name) {
+  let query = db("resources as r");
+
+  return query.where("r.resource_name", name).first().then(projects => {
+    return projects;
+  });
 }
 
 function insert(resource) {

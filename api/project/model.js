@@ -17,14 +17,14 @@ function get(id) {
   if (id) {
     query.where("p.project_id", id).first();
 
-    const promises = [query, getProjectTasks(id), getProjectResources(id)]; // [ projects, actions ]
+    const promises = [query, getProjectTasks(id)]; // [ projects, actions ] getProjectResources(id)
 
     return Promise.all(promises).then(function(results) {
-      let [project, tasks, resources] = results;
+      let [project, tasks] = results;
 
       if (project) {
         project.tasks = tasks;
-        project.resources = resources;
+        //project.resources = resources;
 
         return mappers.projectToBody(project);
       } else {

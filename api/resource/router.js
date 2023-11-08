@@ -1,6 +1,6 @@
 // build your `/api/resources` router here
 const express = require('express');
-const { get, insert, update, remove } = require('./model');
+const { get, insert, update, remove, getByName } = require('./model');
 
 const router = express.Router();
 
@@ -20,9 +20,15 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { resource_name, resource_description } = req.body;
-    if(resource_name && resource_description){
-        const resource = await insert({ resource_name, resource_description }) 
-        res.status(200).json(resource);
+    if(resource_name){
+        const nameExist = await getByName(resource_name);
+        if(nameExist){
+            res.status(400).json({message: 'rejects a resource with an existing resource_name'});
+        }else{
+            const resource = await insert({ resource_name, resource_description }) 
+            res.status(200).json(resource);
+        }
+        
     }else{
         res.status(400).json(null);
     }
