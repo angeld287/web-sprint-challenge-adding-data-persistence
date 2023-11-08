@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
     const _completed = project_completed ? project_completed : false;
 
     if(project_name && project_description ){
-        const project = await insert({ project_name, project_description, completed: _completed }) 
+        const project = await insert({ project_name, project_description, project_completed: _completed }) 
         res.status(200).json(project);
     }else{
         res.status(400).json(null);
