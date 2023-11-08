@@ -17,14 +17,13 @@ function get(id) {
   if (id) {
     query.where("p.project_id", id).first();
 
-    const promises = [query, getProjectTasks(id)]; // [ projects, actions ] getProjectResources(id)
+    const promises = [query, getProjectTasks(id)];
 
     return Promise.all(promises).then(function(results) {
       let [project, tasks] = results;
 
       if (project) {
         project.tasks = tasks;
-        //project.resources = resources;
 
         return mappers.projectToBody(project);
       } else {
@@ -67,10 +66,4 @@ function getProjectTasks(projectId) {
   return db("tasks")
     .where("project_id", projectId)
     .then(tasks => tasks.map(task => mappers.taskToBody(task)));
-}
-
-function getProjectResources(projectId) {
-    return db("project_resources")
-      .where("project_id", projectId)
-      .leftOuterJoin('resources', 'project_resources.resource_id', 'resources.resource_id')
 }
